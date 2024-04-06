@@ -32,13 +32,18 @@ func main() {
 	
 
 	for _, file := range files {
-		if filepath.Ext(file.Name()) == ".txt" {
+
+		fileName := file.Name()
+
+		if filepath.Ext(fileName) == ".txt" {
 
 			// Print the .txt files found
-			fmt.Println(filepath.Join(*dirFlag, file.Name())) 
+			fmt.Println(filepath.Join(*dirFlag, fileName)) 
+
+			fileNameWithoutExt := fileName[:len(fileName)-len(filepath.Ext(fileName))]
 
 			// Read the contents of the text file
-			fileContents, err := ioutil.ReadFile(filepath.Join(*dirFlag, file.Name()))
+			fileContents, err := ioutil.ReadFile(filepath.Join(*dirFlag, fileName))
 			if err != nil {
 				panic(err)
 			}
@@ -46,9 +51,9 @@ func main() {
 
 			// Prepare the Page struct for each .txt file found.
 			page := Page{
-				TextFilePath: filepath.Join(*dirFlag, file.Name()),
-				TextFileName: file.Name(),
-				HTMLPagePath: file.Name() + ".html",
+				TextFilePath: filepath.Join(*dirFlag, fileName),
+				TextFileName: fileName,
+				HTMLPagePath: fileNameWithoutExt + ".html",
 				Content:      string(fileContents),
 			}
 
@@ -77,4 +82,5 @@ func main() {
 			fmt.Printf("HTML file '%s' generated successfully!\n", page.HTMLPagePath)
 		}
 	}
+	// fmt.Printf("`Success! Generated '%s' pages.`\n", files.count)
 }
