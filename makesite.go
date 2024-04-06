@@ -29,7 +29,13 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	
+
+	// Initialize a counter for the number of files
+	fileCount := 0
+
+		// Initialize a counter for the total size of files
+	var totalFileSize int64 = 0
+
 
 	for _, file := range files {
 
@@ -79,8 +85,12 @@ func main() {
 				panic(err)
 			}
 
+			fileCount++
+
+			totalFileSize += file.Size()
+
 			fmt.Printf("HTML file '%s' generated successfully!\n", page.HTMLPagePath)
 		}
 	}
-	// fmt.Printf("`Success! Generated '%s' pages.`\n", files.count)
+	fmt.Fprintf(os.Stdout, "\033[0;32m \033[1m%s\033[0m %s \033[1m%d\033[0m %s (%.2fKB total).\n", "Success!", "Generated", fileCount, "pages", float64(totalFileSize)/1024)
 }
